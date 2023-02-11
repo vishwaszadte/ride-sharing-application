@@ -1,11 +1,11 @@
 const express = require("express");
-const db = require("./database");
+require("./database/index");
 const session = require("express-session");
 const fs = require("fs");
 
 // routes
-const driverRoutes = require("./routes/driver");
-const riderRoutes = require("./routes/rider");
+const driverRouter = require("./routes/driver");
+const riderRouter = require("./routes/rider");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -13,23 +13,25 @@ const port = process.env.PORT || 3000;
 // set ejs as the default templating engine
 app.set("view engine", "ejs");
 
-// initiate the database connection
-db.init();
-
 // Middlewares
-appl.use(
+app.use(
   session({
     secret: "secret",
     resave: false,
-    saveUninitialized,
+    saveUninitialized: true,
   })
 );
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
+app.use(express.urlencoded({ extended: false }));
 
 app.get("/", function (req, res) {
   res.render("home");
 });
 
-app.use("/driver", driverRoutes);
-app.use("/rider", riderRoutes);
+app.use("/driver", driverRouter);
+app.use("/rider", riderRouter);
+
+app.listen(port, () => {
+  console.log(`Server is running on ${port}`);
+});

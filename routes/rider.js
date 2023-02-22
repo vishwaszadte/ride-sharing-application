@@ -43,11 +43,18 @@ router
 
     try {
       await rider.save();
-      res.status(201).send({ message: "Account created successfully." });
+      res.status(201).render("rider/login", {
+        error: "User created successfully. Please log in.",
+      });
     } catch (err) {
       console.log(err);
       res.render("rider/signup", { error: err });
     }
   });
+
+router.route("/home").get((req, res) => {
+  if (req.session.riderLoggedIn) {
+  }
+});
 
 module.exports = router;

@@ -1,5 +1,7 @@
 const express = require("express");
 const Rider = require("../models/rider");
+const Driver = require("../models/driver");
+const driver = require("../models/driver");
 
 const router = express.Router();
 router.use(express.json());
@@ -26,7 +28,7 @@ router
       if (rider) {
         req.session.riderLoggedIn = true;
         req.session.rider = rider;
-        res.status(200).send({ message: "User logged in successfully" });
+        res.status(200).redirect("/rider/home");
       } else {
         res.render("rider/login", { error: "Invalid email or password." });
       }
@@ -52,9 +54,42 @@ router
     }
   });
 
-router.route("/home").get((req, res) => {
-  if (req.session.riderLoggedIn) {
+router.route("/home").get(async (req, res) => {
+  // if (!req.session.riderLoggedIn) {
+  //   res.redirect("/rider/login");
+  //   return;
+  // }
+
+  const filter = {};
+
+  try {
+    const drivers = await Driver.find(filter);
+    res.status(200).render("rider/home", { drivers: drivers });
+  } catch (err) {
+    res.status(500).send({ error: err });
   }
+});
+
+router.route("/driver-detail/:driverId").get(async (req, res, next) => {
+  const driverId = req.params["driverId"];
+
+  Driver.findById(driverId, (err, driver) => {
+    if (err) {
+      res
+        .status(500)
+        .render("rider/driver-detail", { driver: driver, error: null });
+    } else {
+      if (!driver) {
+        res.status(404).render("rider/driver-detail", {
+          driver: driver,
+          error: "Driver not found",
+        });
+      }
+      res
+        .status(200)
+        .render("rider/driver-detail", { driver: driver, error: null });
+    }
+  });
 });
 
 module.exports = router;

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ride-Sharing Application</title>
+
+    <style>
+      /* Center content */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f1f1f1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      /* Navbar styles */
+      .riderHomeNavbar {
+        display: flex;
+        justify-content: flex-end;
+        width: 700px;
+        padding: 10px;
+        margin-top: 80px;
+        position: sticky;
+      }
+
+      /* Button styles */
+      button {
+        border: none;
+        background-color: #7c3aed;
+        color: #ffffff;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      li {
+        list-style: none;
+      }
+
+      button:hover {
+        background-color: #5d1bbd;
+      }
+
+      /* Driver card styles */
+      .driverCard {
+        margin: 20px;
+        border: 1px solid #e3e3e3;
+        padding: 20px;
+        border-radius: 5px;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .driverCard h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      .driverCard h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+
+      .requestRideBtn {
+        margin-top: 10px;
+      }
+
+      .driverDetailsBtn {
+        background-color: #7c3aed;
+        border: none;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      .driverDetailsBtn:hover {
+        background-color: #5d1bbd;
+      }
+
+      @media screen and (max-width: 600px) {
+        /* Center content */
+        body {
+          padding: 10px;
+        }
+
+        /* Driver card styles */
+        .driverCard {
+          margin: 10px;
+          padding: 10px;
+          max-width: none;
+        }
+
+        .driverCard h2 {
+          font-size: 20px;
+        }
+
+        .driverCard h3 {
+          font-size: 16px;
+        }
+
+        .driversContainer {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="riderHomeContainer">
+      <nav class="riderHomeNavbar">
+        <button class="riderProfileBtn">Your Profile</button>
+      </nav>
+
+      <% if (drivers.length > 0) { %>
+      <ul class="driversContainer">
+        <% drivers.forEach(function(driver) { %>
+        <li class="driverCard">
+          <h2><%= driver.name %></h2>
+          <h3>Vehicle Type: <%= driver.vehicleType %></h3>
+          <form action="/rider/driver-detail/<%= driver._id %>" method="GET">
+            <input
+              type="submit"
+              class="driverDetailsBtn"
+              value="More details"
+            />
+          </form>
+          <!-- <button action class="driverDetailsBtn" id="<%= driver._id %>">
+            More details
+          </button> -->
+          <button class="requestRideBtn" id="<%= driver._id %>">
+            Request ride
+          </button>
+        </li>
+        <% }) %>
+      </ul>
+      <% } %>
+    </div>
+  </body>
+</html>

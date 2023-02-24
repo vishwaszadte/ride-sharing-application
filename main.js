@@ -10,6 +10,8 @@ const riderRouter = require("./routes/rider");
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.disable("etag");
+
 // set ejs as the default templating engine
 app.set("view engine", "ejs");
 

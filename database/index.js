@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 
-const mongoURL = dotenv.parsed.MONGO_URL;
+const mongoURL = process.env.MONGO_URL || dotenv.parsed.MONGO_URL;
 
 mongoose.set("strictQuery", false);
 

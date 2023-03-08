@@ -96,11 +96,29 @@ router.route("/driver-detail/:driverId").get(async (req, res, next) => {
   });
 });
 
-router.route("/update-location").post((req, res) => {
-  console.log(req.body);
-  res.status(201).send({
-    message: "Rider location updated successfully",
-  });
+router.route("/update-location").post(async (req, res) => {
+  // console.log(req.body);
+
+  const options = {
+    provider: "mapquest",
+    httpAdapter: "https", // Default
+    apiKey: "4EJdFTxbqfHNjxqT9uXVHdkd1ijFjnjC", // for Mapquest, OpenCage, Google Premier
+    formatter: "json", // 'gpx', 'string', ...
+  };
+
+  const geocoder = NodeGeocoder(options);
+
+  try {
+    data = await geocoder.reverse({ lat: req.body.lat, lon: req.body.lon });
+    console.log(data);
+    res.status(201).send({
+      data: data,
+    });
+  } catch (err) {
+    res.status(400).send({
+      error: err,
+    });
+  }
 });
 
 module.exports = router;

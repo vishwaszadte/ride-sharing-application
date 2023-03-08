@@ -55,10 +55,10 @@ router
   });
 
 router.route("/home").get(async (req, res) => {
-  // if (!req.session.riderLoggedIn) {
-  //   res.redirect("/rider/login");
-  //   return;
-  // }
+  if (!req.session.riderLoggedIn) {
+    res.redirect("/rider/login");
+    return;
+  }
 
   const filter = {};
 

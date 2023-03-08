@@ -1,7 +1,7 @@
 const express = require("express");
 const Rider = require("../models/rider");
 const Driver = require("../models/driver");
-const driver = require("../models/driver");
+const NodeGeocoder = require("node-geocoder");
 
 const router = express.Router();
 router.use(express.json());

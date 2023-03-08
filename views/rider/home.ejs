@@ -145,4 +145,52 @@
       <% } %>
     </div>
   </body>
+  <script>
+    const updateRiderLocation = (position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      console.log("latitude: ", lat, " \nlongitude: ", lon);
+
+      // Check if we have already updated the location in the past minute
+      const lastUpdated = localStorage.getItem("lastUpdated");
+      if (lastUpdated && Date.now() - lastUpdated < 60000) {
+        // If we have already updated the location, don't do it again
+        return;
+      }
+
+      // Make API call to update user's location in the database
+      fetch("/rider/update-location", {
+        method: "POST",
+        body: JSON.stringify({
+          lat: lat,
+          lon: lon,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Update the lastUpdated time in localStorage
+          localStorage.setItem("lastUpdated", Date.now());
+
+          // Reload the page after the API call completes
+          window.location.reload(false);
+        })
+        .catch((error) => {
+          console.error("There was a problem with the API call:", error);
+        });
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(updateRiderLocation);
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  </script>
 </html>

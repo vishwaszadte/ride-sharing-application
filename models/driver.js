@@ -49,6 +49,14 @@ const driverSchema = mongoose.Schema({
   },
   location: {
     type: locationSchema,
+    default: {
+      formattedAddress: "RSCOE, Tathawade",
+      latitude: 18.632096514025942,
+      longitude: 73.84571163425848,
+      city: "Pune",
+      country: "India",
+      pincode: "411033",
+    },
     required: true,
   },
 });

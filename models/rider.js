@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const locationSchema = require("./schemas/location");
 
 const riderSchema = mongoose.Schema({
   name: {
@@ -33,6 +34,10 @@ const riderSchema = mongoose.Schema({
     type: String,
     trim: true,
     minlength: 9,
+  },
+  location: {
+    type: locationSchema,
+    required: true,
   },
 });
 

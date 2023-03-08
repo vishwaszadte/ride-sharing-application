@@ -217,7 +217,6 @@
     const updateRiderLocation = (position) => {
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
-      console.log("latitude: ", lat, " \nlongitude: ", lon);
 
       // Check if we have already updated the location in the past minute
       const lastUpdated = localStorage.getItem("lastUpdated");
@@ -246,6 +245,8 @@
         .then((data) => {
           // Update the lastUpdated time in localStorage
           localStorage.setItem("lastUpdated", Date.now());
+
+          console.log(data);
 
           // Reload the page after the API call completes
           window.location.reload(false);

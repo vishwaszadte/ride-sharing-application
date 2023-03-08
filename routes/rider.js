@@ -98,7 +98,7 @@ router.route("/driver-detail/:driverId").get(async (req, res, next) => {
 
 router.route("/update-location").post((req, res) => {
   console.log(req.body);
-  res.status(200).send({
+  res.status(201).send({
     message: "Rider location updated successfully",
   });
 });

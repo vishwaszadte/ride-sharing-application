@@ -9,6 +9,10 @@ router.use(express.json());
 router
   .route("/login")
   .get((req, res) => {
+    if (req.session.riderLoggedIn) {
+      res.redirect("/rider/home");
+      return;
+    }
     res.render("rider/login", { error: "" });
   })
   .post((req, res) => {

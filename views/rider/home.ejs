@@ -7,109 +7,177 @@
     <title>Ride-Sharing Application</title>
 
     <style>
-      /* Center content */
+      /* Overall styling */
       body {
+        margin: 0;
+        padding: 0;
         font-family: Arial, sans-serif;
-        background-color: #f1f1f1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
       }
 
-      /* Navbar styles */
+      /* Navbar styling */
       .riderHomeNavbar {
+        background-color: #333;
+        color: #fff;
         display: flex;
         justify-content: flex-end;
-        width: 700px;
         padding: 10px;
-        margin-top: 80px;
-        position: sticky;
       }
 
-      /* Button styles */
-      button {
+      .riderProfileBtn {
+        background-color: transparent;
         border: none;
-        background-color: #7c3aed;
-        color: #ffffff;
-        padding: 10px 20px;
-        font-size: 16px;
+        color: #fff;
         cursor: pointer;
-        border-radius: 5px;
-      }
-      li {
-        list-style: none;
-      }
-
-      button:hover {
-        background-color: #5d1bbd;
+        font-size: 16px;
+        margin-right: auto;
+        text-transform: uppercase;
       }
 
-      /* Driver card styles */
+      /* Driver card styling */
+      .driversContainer {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        grid-gap: 20px;
+        margin-top: 20px;
+      }
+
       .driverCard {
-        margin: 20px;
-        border: 1px solid #e3e3e3;
-        padding: 20px;
-        border-radius: 5px;
-        max-width: 400px;
-        text-align: center;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
       }
 
       .driverCard h2 {
-        font-size: 24px;
+        font-size: 28px;
+        font-weight: bold;
         margin-bottom: 10px;
+        text-align: center;
       }
 
       .driverCard h3 {
-        font-size: 18px;
-        margin-bottom: 20px;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
+      .driverDetailsBtn,
+      .requestRideBtn {
+        background-color: #333;
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px;
+        margin: 10px auto 0;
+        text-align: center;
+        text-transform: uppercase;
+        width: 80%;
+      }
+
+      .driverDetailsBtn:hover,
+      .requestRideBtn:hover {
+        background-color: #555;
       }
 
       .requestRideBtn {
-        margin-top: 10px;
+        background-color: #ffc107;
+        margin-top: auto;
       }
 
-      .driverDetailsBtn {
-        background-color: #7c3aed;
-        border: none;
+      .driverImg {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+      }
+
+      .driverRating {
+        background-color: #fff;
+        border: 2px solid #ffc107;
+        border-radius: 50%;
+        color: #ffc107;
+        font-size: 14px;
+        font-weight: bold;
+        height: 30px;
+        left: 10px;
+        line-height: 30px;
+        position: absolute;
+        text-align: center;
+        top: 10px;
+        width: 30px;
+        z-index: 2;
+      }
+
+      .driverCard::before {
+        content: "";
+        display: block;
+        padding-top: 75%;
+      }
+
+      .driverCardOverlay {
+        background-color: rgba(0, 0, 0, 0.5);
+        bottom: 0;
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        transition: opacity 0.2s ease-in-out;
+      }
+
+      .driverCard:hover .driverCardOverlay {
+        opacity: 1;
+      }
+
+      .driverCardOverlayText {
         color: #fff;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 5px;
+        font-size: 18px;
+        font-weight: bold;
+        left: 50%;
+        position: absolute;
+        text-align: center;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        z-index: 10;
       }
 
-      .driverDetailsBtn:hover {
-        background-color: #5d1bbd;
-      }
+      @media only screen and (max-width: 768px) {
+        .riderHomeNavbar {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 20px;
+        }
 
-      @media screen and (max-width: 600px) {
-        /* Center content */
-        body {
+        .riderProfileBtn {
+          font-size: 14px;
           padding: 10px;
         }
 
-        /* Driver card styles */
         .driverCard {
-          margin: 10px;
-          padding: 10px;
-          max-width: none;
+          display: block;
+          margin-bottom: 20px;
         }
 
         .driverCard h2 {
-          font-size: 20px;
+          font-size: 18px;
         }
 
         .driverCard h3 {
           font-size: 16px;
         }
 
-        .driversContainer {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 20px;
+        .driverDetailsBtn,
+        .requestRideBtn {
+          font-size: 14px;
+          padding: 10px;
         }
       }
     </style>

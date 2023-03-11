@@ -6,15 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ride-Sharing Application</title>
     <style>
-      /* Style the body */
       body {
-        margin: 0;
         padding: 0;
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
       }
-
-      /* Style the driver detail container */
       .driverDetailContainer {
         display: flex;
         justify-content: center;
@@ -22,54 +18,105 @@
         height: 100vh;
       }
 
-      /* Style the driver detail card */
       .driverDetailCard {
-        width: 400px;
-        padding: 20px;
         background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+        max-width: 400px;
+        padding: 20px;
         text-align: center;
       }
 
-      /* Style the driver detail card title */
+      .driverDetailCard img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+
       .driverDetailCard h1 {
-        font-size: 24px;
-        margin-bottom: 10px;
+        margin-top: 0;
       }
 
-      /* Style the driver detail card subtitle */
       .driverDetailCard h2 {
-        font-size: 20px;
-        margin-bottom: 10px;
-      }
-
-      /* Style the driver detail card subtext */
-      .driverDetailCard span {
-        font-weight: normal;
-      }
-
-      /* Style the driver detail card estimated cost */
-      .driverDetailCard h3 {
         font-size: 18px;
-        margin-bottom: 20px;
+        font-weight: normal;
+        margin: 10px 0;
       }
 
-      /* Style the driver detail card button */
+      .driverDetailCard h2 span {
+        font-weight: bold;
+      }
+
+      .driverDetailCard h3 {
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
       .driverDetailCard button {
         background-color: #4caf50;
+        border: none;
         color: #fff;
         padding: 10px 20px;
         font-size: 16px;
-        border: none;
-        border-radius: 5px;
         cursor: pointer;
-        transition: background-color 0.2s ease-in-out;
+        transition: background-color 0.3s;
       }
 
-      /* Style the driver detail card button on hover */
       .driverDetailCard button:hover {
         background-color: #3e8e41;
+      }
+
+      .errorContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .errorContainer h2 {
+        font-size: 24px;
+        color: red;
+      }
+
+      @media only screen and (max-width: 600px) {
+        .driverDetailCard {
+          max-width: 300px;
+        }
+
+        .driverDetailCard h2 {
+          font-size: 16px;
+        }
+
+        .driverDetailCard h3 {
+          font-size: 14px;
+        }
+
+        .driverDetailCard button {
+          font-size: 14px;
+          padding: 8px 16px;
+        }
+      }
+
+      @media only screen and (max-width: 400px) {
+        .driverDetailCard h1 {
+          font-size: 24px;
+        }
+
+        .driverDetailCard h2 {
+          font-size: 14px;
+          margin-top: 8px;
+        }
+
+        .driverDetailCard h3 {
+          font-size: 12px;
+          margin-top: 8px;
+        }
+
+        .driverDetailCard button {
+          font-size: 12px;
+          padding: 6px 12px;
+          margin-top: 16px;
+        }
       }
     </style>
   </head>
@@ -77,6 +124,14 @@
     <div class="driverDetailContainer">
       <% if (driver) { %>
       <div class="driverDetailCard">
+        <% if (driver.photo) { %>
+        <img src="<%= driver.photo%>" alt="Driver Photo" />
+        <% } else { %>
+        <img
+          src="https://previews.123rf.com/images/puruan/puruan1702/puruan170208984/72742803-driver-avatar-icon-in-colors.jpg"
+          alt="Driver Photo"
+        />
+        <% } %>
         <h1><b>Name: </b> <%= driver.name %></h1>
         <h2>
           <b>Vehicle: </b> <%= driver.vehicleName %>

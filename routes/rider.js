@@ -65,13 +65,19 @@ router.route("/home").get(async (req, res) => {
     return;
   }
 
+  const riderID = req.session.rider._id;
+
   const filter = {};
 
   try {
     const drivers = await Driver.find(filter);
-    res.status(200).render("rider/home", { drivers: drivers });
+    const rider = await Rider.findById(riderID);
+
+    res.status(200).render("rider/home", { drivers: drivers, rider: rider });
+    return;
   } catch (err) {
     res.status(500).send({ error: err });
+    return;
   }
 });
 
@@ -98,21 +104,43 @@ router.route("/driver-detail/:driverId").get(async (req, res, next) => {
 });
 
 router.route("/update-location").post(async (req, res) => {
+  const riderID = req.session.rider._id;
+
   const options = {
     provider: "mapquest",
-    httpAdapter: "https", // Default
-    apiKey: process.env.MAPQUEST_API_KEY, // for Mapquest, OpenCage, Google Premier
-    formatter: "json", // 'gpx', 'string', ...
+    httpAdapter: "https",
+    apiKey: process.env.MAPQUEST_API_KEY,
+    formatter: "json",
   };
 
   const geocoder = NodeGeocoder(options);
 
   try {
     data = await geocoder.reverse({ lat: req.body.lat, lon: req.body.lon });
-    console.log(data);
-    res.status(201).send({
-      data: data,
-    });
+
+    const newLocation = {
+      formattedAddress: data[0].formattedAddress,
+      latitude: data[0].latitude,
+      longitude: data[0].longitude,
+      city: data[0].city,
+      country: data[0].country,
+      pincode: data[0].zipcode,
+    };
+
+    Rider.updateOne({ _id: riderID }, { $set: { location: newLocation } })
+      .then((result) => {
+        console.log(result);
+        res.status(201).send({
+          data: result,
+        });
+        return;
+      })
+      .catch((err) => {
+        res.status(400).send({
+          error: err,
+        });
+        return;
+      });
   } catch (err) {
     res.status(400).send({
       error: err,

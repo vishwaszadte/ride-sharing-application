@@ -47,6 +47,9 @@ const driverSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  photo: {
+    type: String,
+  },
   location: {
     type: locationSchema,
     default: {

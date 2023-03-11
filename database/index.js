@@ -1,12 +1,10 @@
 const mongoose = require("mongoose");
-const dotenv = require("dotenv").config();
-
-const mongoURL = process.env.MONGO_URL || dotenv.parsed.MONGO_URL;
+require("dotenv").config();
 
 mongoose.set("strictQuery", false);
 
 mongoose
-  .connect(mongoURL)
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log("db is live");
   })

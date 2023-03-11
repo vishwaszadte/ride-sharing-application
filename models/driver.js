@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const locationSchema = require("./schemas/location");
 
 const driverSchema = mongoose.Schema({
   name: {
@@ -44,6 +45,21 @@ const driverSchema = mongoose.Schema({
   },
   vehicleType: {
     type: String,
+    required: true,
+  },
+  photo: {
+    type: String,
+  },
+  location: {
+    type: locationSchema,
+    default: {
+      formattedAddress: "RSCOE, Tathawade",
+      latitude: 18.632096514025942,
+      longitude: 73.84571163425848,
+      city: "Pune",
+      country: "India",
+      pincode: "411033",
+    },
     required: true,
   },
 });

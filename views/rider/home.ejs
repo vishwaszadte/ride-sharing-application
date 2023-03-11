@@ -7,109 +7,144 @@
     <title>Ride-Sharing Application</title>
 
     <style>
-      /* Center content */
+      /* Rider home page styles */
+
       body {
+        margin: 0;
+        padding: 0;
         font-family: Arial, sans-serif;
-        background-color: #f1f1f1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
       }
 
-      /* Navbar styles */
+      .riderHomeContainer {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
       .riderHomeNavbar {
         display: flex;
         justify-content: flex-end;
-        width: 700px;
-        padding: 10px;
-        margin-top: 80px;
-        position: sticky;
-      }
-
-      /* Button styles */
-      button {
-        border: none;
-        background-color: #7c3aed;
-        color: #ffffff;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 5px;
-      }
-      li {
-        list-style: none;
-      }
-
-      button:hover {
-        background-color: #5d1bbd;
-      }
-
-      /* Driver card styles */
-      .driverCard {
-        margin: 20px;
-        border: 1px solid #e3e3e3;
-        padding: 20px;
-        border-radius: 5px;
-        max-width: 400px;
-        text-align: center;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      }
-
-      .driverCard h2 {
-        font-size: 24px;
-        margin-bottom: 10px;
-      }
-
-      .driverCard h3 {
-        font-size: 18px;
+        align-items: center;
         margin-bottom: 20px;
       }
 
-      .requestRideBtn {
-        margin-top: 10px;
-      }
-
-      .driverDetailsBtn {
-        background-color: #7c3aed;
+      .riderProfileBtn {
+        background-color: #0066ff;
+        color: white;
         border: none;
-        color: #fff;
         padding: 10px 20px;
         font-size: 16px;
-        cursor: pointer;
         border-radius: 5px;
+        cursor: pointer;
       }
 
-      .driverDetailsBtn:hover {
-        background-color: #5d1bbd;
+      .driversContainer {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
       }
 
-      @media screen and (max-width: 600px) {
-        /* Center content */
-        body {
-          padding: 10px;
+      .driverCard {
+        width: calc(33.33% - 10px);
+        margin-bottom: 20px;
+        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .driverCard img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .driverCard h2 {
+        margin: 10px 0;
+        font-size: 20px;
+      }
+
+      .driverCard h3 {
+        margin: 10px 0;
+        font-size: 16px;
+        color: #666;
+      }
+
+      .driverDetailsBtn,
+      .requestRideBtn {
+        background-color: #0066ff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+
+      .driverDetailsBtn:hover,
+      .requestRideBtn:hover {
+        background-color: #0052cc;
+      }
+
+      @media only screen and (max-width: 768px) {
+        .driversContainer {
+          flex-direction: column;
+          align-items: center;
         }
 
-        /* Driver card styles */
         .driverCard {
-          margin: 10px;
-          padding: 10px;
-          max-width: none;
+          width: 100%;
+          margin-bottom: 20px;
+        }
+
+        .riderHomeNavbar {
+          justify-content: center;
+          margin-bottom: 10px;
+        }
+
+        .riderProfileBtn {
+          font-size: 14px;
+          padding: 8px 16px;
         }
 
         .driverCard h2 {
-          font-size: 20px;
-        }
-
-        .driverCard h3 {
           font-size: 16px;
         }
 
-        .driversContainer {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 20px;
+        .driverCard h3 {
+          font-size: 14px;
+        }
+
+        .driverDetailsBtn,
+        .requestRideBtn {
+          font-size: 14px;
+          padding: 8px 16px;
+        }
+      }
+
+      @media only screen and (max-width: 480px) {
+        .riderHomeContainer {
+          padding: 10px;
+        }
+
+        .driverCard h2 {
+          font-size: 14px;
+        }
+
+        .driverCard h3 {
+          font-size: 12px;
+        }
+
+        .driverDetailsBtn,
+        .requestRideBtn {
+          font-size: 12px;
+          padding: 6px 12px;
         }
       }
     </style>
@@ -124,6 +159,14 @@
       <ul class="driversContainer">
         <% drivers.forEach(function(driver) { %>
         <li class="driverCard">
+          <% if (driver.photo) { %>
+          <img src="<%= driver.photo%>" alt="Driver Photo" />
+          <% } else { %>
+          <img
+            src="https://previews.123rf.com/images/puruan/puruan1702/puruan170208984/72742803-driver-avatar-icon-in-colors.jpg"
+            alt="Driver Photo"
+          />
+          <% } %>
           <h2><%= driver.name %></h2>
           <h3>Vehicle Type: <%= driver.vehicleType %></h3>
           <form action="/rider/driver-detail/<%= driver._id %>" method="GET">
@@ -145,4 +188,53 @@
       <% } %>
     </div>
   </body>
+  <script>
+    const updateRiderLocation = (position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      // Check if we have already updated the location in the past minute
+      const lastUpdated = localStorage.getItem("lastUpdated");
+      if (lastUpdated && Date.now() - lastUpdated < 60000) {
+        // If we have already updated the location, don't do it again
+        return;
+      }
+
+      // Make API call to update user's location in the database
+      fetch("/rider/update-location", {
+        method: "POST",
+        body: JSON.stringify({
+          lat: lat,
+          lon: lon,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Update the lastUpdated time in localStorage
+          localStorage.setItem("lastUpdated", Date.now());
+
+          console.log(data);
+
+          // Reload the page after the API call completes
+          window.location.reload(false);
+        })
+        .catch((error) => {
+          console.error("There was a problem with the API call:", error);
+        });
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(updateRiderLocation);
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  </script>
 </html>

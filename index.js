@@ -2,6 +2,9 @@ const express = require("express");
 require("./database/index");
 const session = require("express-session");
 const fs = require("fs");
+require("dotenv").config();
+
+// console.log(process.env);
 
 // routes
 const driverRouter = require("./routes/driver");

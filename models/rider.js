@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const locationSchema = require("./schemas/location");
 
 const riderSchema = mongoose.Schema({
   name: {
@@ -33,6 +34,18 @@ const riderSchema = mongoose.Schema({
     type: String,
     trim: true,
     minlength: 9,
+  },
+  location: {
+    type: locationSchema,
+    default: {
+      formattedAddress: "RSCOE, Tathawade",
+      latitude: 18.632096514025942,
+      longitude: 73.84571163425848,
+      city: "Pune",
+      country: "India",
+      pincode: "411033",
+    },
+    required: true,
   },
 });
 

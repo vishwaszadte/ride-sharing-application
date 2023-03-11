@@ -107,50 +107,17 @@ router.route("/update-location").post(async (req, res) => {
 
   const geocoder = NodeGeocoder(options);
 
-  // geocoder
-  //   .reverse({ lat: req.body.lat, lon: req.body.lon })
-  //   .then((data) => {
-  //     console.log(data);
-  //     res.status(201).send({
-  //       data: data,
-  //     });
-  //   })
-  //   .catch((err) => {
-  //     res.status(400).send({
-  //       error: err,
-  //     });
-  //   });
-
-  let responseSent = false;
-
-  geocoder.reverse({ lat: req.body.lat, lon: req.body.lon }, (err, data) => {
-    if (err) {
-      res.status(400).send({
-        error: err,
-      });
-      return;
-    }
-
-    if (!responseSent) {
-      console.log(data);
-      res.status(201).send({
-        data: data,
-      });
-      responseSent = true;
-    }
-  });
-
-  // try {
-  //   data = await geocoder.reverse({ lat: req.body.lat, lon: req.body.lon });
-  //   console.log(data);
-  //   res.status(201).send({
-  //     data: data,
-  //   });
-  // } catch (err) {
-  //   res.status(400).send({
-  //     error: err,
-  //   });
-  // }
+  try {
+    data = await geocoder.reverse({ lat: req.body.lat, lon: req.body.lon });
+    console.log(data);
+    res.status(201).send({
+      data: data,
+    });
+  } catch (err) {
+    res.status(400).send({
+      error: err,
+    });
+  }
 });
 
 module.exports = router;

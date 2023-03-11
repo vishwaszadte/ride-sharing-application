@@ -57,8 +57,8 @@ router
   .post(upload.single("photo"), (req, res) => {
     // S3 instance to upload photo to bucket
     const s3 = new AWS.S3({
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID, // accessKeyId that is stored in .env file
-      secretAccessKey: process.env.AWS_ACCESS_KEY_SECRET, // secretAccessKey is also store in .env file
+      accessKeyId: process.env.AWS_ACCESS_KEY, // accessKeyId that is stored in .env file
+      secretAccessKey: process.env.AWS_SECRET_KEY, // secretAccessKey is also store in .env file
     });
 
     // Definning the params variable to uplaod the photo

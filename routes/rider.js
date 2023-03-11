@@ -2,6 +2,7 @@ const express = require("express");
 const Rider = require("../models/rider");
 const Driver = require("../models/driver");
 const NodeGeocoder = require("node-geocoder");
+const axios = require("axios");
 
 const router = express.Router();
 router.use(express.json());
@@ -97,28 +98,59 @@ router.route("/driver-detail/:driverId").get(async (req, res, next) => {
 });
 
 router.route("/update-location").post(async (req, res) => {
-  // console.log(req.body);
-
   const options = {
     provider: "mapquest",
     httpAdapter: "https", // Default
-    apiKey: "4EJdFTxbqfHNjxqT9uXVHdkd1ijFjnjC", // for Mapquest, OpenCage, Google Premier
+    apiKey: process.env.MAPQUEST_API_KEY, // for Mapquest, OpenCage, Google Premier
     formatter: "json", // 'gpx', 'string', ...
   };
 
   const geocoder = NodeGeocoder(options);
 
-  try {
-    data = await geocoder.reverse({ lat: req.body.lat, lon: req.body.lon });
-    console.log(data);
-    res.status(201).send({
-      data: data,
-    });
-  } catch (err) {
-    res.status(400).send({
-      error: err,
-    });
-  }
+  // geocoder
+  //   .reverse({ lat: req.body.lat, lon: req.body.lon })
+  //   .then((data) => {
+  //     console.log(data);
+  //     res.status(201).send({
+  //       data: data,
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     res.status(400).send({
+  //       error: err,
+  //     });
+  //   });
+
+  let responseSent = false;
+
+  geocoder.reverse({ lat: req.body.lat, lon: req.body.lon }, (err, data) => {
+    if (err) {
+      res.status(400).send({
+        error: err,
+      });
+      return;
+    }
+
+    if (!responseSent) {
+      console.log(data);
+      res.status(201).send({
+        data: data,
+      });
+      responseSent = true;
+    }
+  });
+
+  // try {
+  //   data = await geocoder.reverse({ lat: req.body.lat, lon: req.body.lon });
+  //   console.log(data);
+  //   res.status(201).send({
+  //     data: data,
+  //   });
+  // } catch (err) {
+  //   res.status(400).send({
+  //     error: err,
+  //   });
+  // }
 });
 
 module.exports = router;

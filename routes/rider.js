@@ -129,7 +129,6 @@ router.route("/update-location").post(async (req, res) => {
 
     Rider.updateOne({ _id: riderID }, { $set: { location: newLocation } })
       .then((result) => {
-        console.log(result);
         res.status(201).send({
           data: result,
         });
